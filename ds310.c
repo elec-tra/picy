@@ -40,6 +40,26 @@ static struct of_device_id ds310_sensor_of_match[] = {
 MODULE_DEVICE_TABLE(of, ds310_sensor_of_match);
 
 /**
+ * @brief This function is called, when the DS310 sensor device
+ *       file is opened
+*/
+static int ds310_sensor_open(struct inode *inode, struct file *file)
+{
+    printk(KERN_INFO "ds310_sensor_open\n");
+    return 0;
+}
+
+/**
+ * @brief This function is called, when the DS310 sensor device
+ *       file is closed
+*/
+static int ds310_sensor_release(struct inode *inode, struct file *file)
+{
+    printk(KERN_INFO "ds310_sensor_release\n");
+    return 0;
+}
+
+/**
  * @brief Mapping file operations to the character device file
 */
 static struct ds310_sensor_file_operations =
@@ -102,6 +122,8 @@ static int ds310_sensor_probe(struct i2c_client *client, const struct i2c_device
         printk(KERN_ERR "ds310_sensor_probe: cdev_add failed\n");
         goto KERNEL_ERROR;
     }
+
+    return 0;
 
 KERNEL_ERROR:
     device_destroy(ds310_sensor_class, ds310_sensor_device_number);
